@@ -47,6 +47,12 @@ Example IAM Policy:
 
 # Invocation
 
+Syntax:
+```
+bash dyndns.bash "<zone_id>" "<record_name> [ttl]"
+```
+
+For example:
 ```
 bash dyndns.bash "XYZROUTE53ZONEID" "test.example.com"
 ```
