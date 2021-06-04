@@ -98,7 +98,7 @@ do
 done
 
 UPDATE_RECORD="N"
-CACHEFILE="/tmp/$0-${HOSTED_ZONE_ID}-${RECORD_NAME}-cache"
+CACHEFILE="/tmp/dyndns-bash-${HOSTED_ZONE_ID}-${RECORD_NAME}-cache"
 
 if [[ ! -f "$CACHEFILE" ]];
 then
