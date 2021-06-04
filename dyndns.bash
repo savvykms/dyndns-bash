@@ -97,11 +97,28 @@ do
   fi
 done
 
-echo "Setting IP to \"$MY_IP\"";
+UPDATE_RECORD="N"
+CACHEFILE="/tmp/$0-${HOSTED_ZONE_ID}-${RECORD_NAME}-cache"
 
-aws route53 change-resource-record-sets --hosted-zone-id "${HOSTED_ZONE_ID}" --change-batch "$(cat <<-EEOOFF
+if [[ ! -f "$CACHEFILE" ]];
+then
+  echo "No cache filed detected; running"
+  UPDATE_RECORD="Y"
+elif [[ "$(cat "$CACHEFILE")" != "${MY_IP}" ]];
+then
+  echo "New IP detected ($(cat $CACHEFILE) -> ${MY_IP})"
+  UPDATE_RECORD="Y"
+else
+  echo "No change to record detected"
+fi
+
+
+if [[ "x${UPDATE_RECORD}" == "xY" ]];
+then
+  echo "Attempting to set record"
+  aws route53 change-resource-record-sets --hosted-zone-id "${HOSTED_ZONE_ID}" --change-batch "$(cat <<-EEOOFF
 {
-  "Comment":"Updated by $0 at $(date +"%s")",
+  "Comment":"Updated by $0 at $(date --utc +"%s")",
   "Changes":[
     {
       "Action":"UPSERT",
@@ -119,4 +136,5 @@ aws route53 change-resource-record-sets --hosted-zone-id "${HOSTED_ZONE_ID}" --c
   ]
 }
 EEOOFF
-)"
+  )" && ( echo -n "${MY_IP}" > "$CACHEFILE" )
+fi
