@@ -4,12 +4,21 @@ This codebase consists of a Bash shell script with which to update a specified D
 
 # Requirements
 
+## Network requirements:
+
+DNS resolution and reachability of one or more of the following domains is required (or alteration of this script to provide alternative method):
+ - curl -s "https://checkip.amazonaws.com/"
+ - curl -s "https://api.ipify.org?format=text"
+ - curl -s "https://api.my-ip.io/ip.txt"
+
+Keep in mind these services have their own terms of service; modify the `IP_FUNCS` array to select which ones you want.
+
 ## Software dependencies
 
 Rough list of software required:
  - Bash
  - curl
- - AWS CLI version 1
+ - AWS CLI
 
 This was developed with the following versions initially:
  - GNU bash, version 4.4.20(1)-release (x86_64-pc-linux-gnu)
